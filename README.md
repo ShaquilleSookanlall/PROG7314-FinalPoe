@@ -9,6 +9,26 @@ A modern Android weather application built with Kotlin that provides real-time w
 
 ---
 
+## 🎥 Video Demonstration
+
+**📹 Watch the full app demonstration on YouTube:**
+
+[![Weather App Demo](https://img.shields.io/badge/▶️_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](YOUR_YOUTUBE_LINK_HERE)
+
+> 👆 *Click the badge above to watch a complete walkthrough of all features, including authentication, weather search, saved locations, settings, and more.*
+
+**What's covered in the demo:**
+- 🔐 Sign-up and authentication (email & Google Sign-In)
+- 🔒 Biometric authentication
+- 🌤️ Searching for weather by city
+- 📍 Saving and managing locations
+- ⚙️ Changing settings (temperature units, language)
+- 🔔 Weather alerts demonstration
+- 📤 Sharing weather data
+- 💾 Offline caching capabilities
+
+---
+
 ## 📱 Features
 
 ### Core Functionality
@@ -93,23 +113,85 @@ A modern Android weather application built with Kotlin that provides real-time w
 
 ## 🚀 Installation
 
-### Option 1: Download APK (Recommended for Grading)
+### Method 1: Download from GitHub Releases (Recommended)
 
-1. **Download the signed APK:**
-   - Go to [GitHub Releases](https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe/releases)
-   - Download `weather-app-v1.0.0.apk`
+This is the **easiest and recommended method** for installing the app, especially for grading purposes.
 
-2. **Enable Unknown Sources:**
-   - **Android 8.0+:** Settings → Apps → Special access → Install unknown apps → Select your browser → Allow
-   - **Android 7.x:** Settings → Security → Unknown sources → Enable
+#### Step 1: Navigate to Releases
 
-3. **Install:**
-   - Open the downloaded APK file
-   - Tap "Install"
-   - Wait for installation to complete
-   - Tap "Open" to launch
+1. Go to the GitHub repository: [PROG7314-FinalPoe](https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe)
+2. Click on **"Releases"** in the right sidebar, or go directly to: https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe/releases
+3. Find the latest release (should be **v1.0.0** or higher)
 
-### Option 2: Build from Source
+#### Step 2: Download the APK
+
+1. Under **"Assets"**, click on **`weather-app-v1.0.0.apk`** (or the latest version number)
+2. The APK file will download to your device (typically 8-12 MB)
+3. Note the download location (usually `Downloads` folder)
+
+#### Step 3: Enable Installation from Unknown Sources
+
+**For Android 8.0 and higher:**
+1. When you try to install the APK, Android will prompt you
+2. Tap **"Settings"**
+3. Enable **"Allow from this source"** for your browser or file manager
+4. Go back and proceed with installation
+
+**For Android 7.x:**
+1. Open **Settings**
+2. Go to **Security & Privacy**
+3. Enable **"Unknown sources"**
+4. Confirm the warning
+
+**Alternative method (if the above doesn't work):**
+1. Settings → Apps → Special app access → Install unknown apps
+2. Find your browser or file manager
+3. Enable "Allow from this source"
+
+#### Step 4: Install the APK
+
+1. Open your **File Manager** or **Downloads** app
+2. Navigate to the `Downloads` folder
+3. Tap on **`weather-app-v1.0.0.apk`**
+4. Review the permissions requested
+5. Tap **"Install"**
+6. Wait 5-10 seconds for installation to complete
+7. Tap **"Open"** to launch the app immediately, or tap **"Done"** to exit
+
+#### Step 5: First Launch
+
+1. The app will open to the landing screen
+2. Tap **"Sign Up"** to create an account or **"Sign In"** if you already have one
+3. Grant any requested permissions (notifications, location - both optional)
+4. Start using the app!
+
+#### Troubleshooting GitHub Release Installation
+
+**"App not installed" error:**
+- Make sure you have at least 50 MB free storage
+- Uninstall any previous version first
+- Try rebooting your device
+
+**"Parse error" or "Invalid APK":**
+- Re-download the APK (it may be corrupted)
+- Make sure you downloaded the `.apk` file, not a `.zip` or other format
+- Ensure your Android version is 7.0 or higher
+
+**Can't find the APK after downloading:**
+- Check your Downloads folder
+- Look in File Manager under "Recent files"
+- Re-download if necessary
+
+**Google Play Protect warning:**
+- This is normal for apps not from the Play Store
+- Tap "Install anyway" or "More details" → "Install anyway"
+- The app is safe and signed with a release key
+
+---
+
+### Method 2: Build from Source (For Developers)
+
+If you want to build the app yourself or make modifications:
 
 ```bash
 # Clone the repository
@@ -117,11 +199,23 @@ git clone https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe.git
 cd PROG7314-FinalPoe
 
 # Open in Android Studio
+# File → Open → Select the cloned directory
+
+# Wait for Gradle sync to complete
+
+# Build the release APK
 # Build → Select Build Variant → release
 # Build → Build Bundle(s) / APK(s) → Build APK(s)
 
-# APK location: app/build/outputs/apk/release/app-release.apk
+# The APK will be generated at:
+# app/build/outputs/apk/release/app-release.apk
 ```
+
+**Prerequisites for building:**
+- Android Studio Hedgehog (2023.1.1) or later
+- JDK 17
+- Android SDK with API 35
+- Gradle 8.11.1 (wrapper included)
 
 ---
 
@@ -583,7 +677,7 @@ All core application logic, architecture decisions, and implementation were done
 - Email/password sign-in
 - Google Sign-In option
 - Biometric prompt
-- 
+
 ---
 
 *Last Updated: November 18, 2025*  
