@@ -41,6 +41,11 @@ jobs:
         echo "App module structure:"
         ls -la app/src/ || echo "No app/src directory"
         
+    # --- THIS IS THE NEW STEP ---
+    # Creates the google-services.json file from the GitHub Secret
+    - name: Create google-services.json
+      run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" > app/google-services.json
+      
     - name: Build project
       run: ./gradlew build -x test --stacktrace
       
