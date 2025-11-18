@@ -13,7 +13,7 @@ A modern Android weather application built with Kotlin that provides real-time w
 
 **📹 Watch the full app demonstration on YouTube:**
 
-[![Weather App Demo](https://img.shields.io/badge/▶️_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](YOUR_YOUTUBE_LINK_HERE)
+[![Weather App Demo](https://img.shields.io/badge/▶️_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/IWKNExwVlxU?si=P4BnHWEpiP30NRLK)
 
 > 👆 *Click the badge above to watch a complete walkthrough of all features, including authentication, weather search, saved locations, settings, and more.*
 
