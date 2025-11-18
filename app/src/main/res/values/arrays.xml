@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Language display names for the dropdown -->
+    <string-array name="language_names">
+        <item>English</item>
+        <item>Afrikaans</item>
+    </string-array>
+
+    <!-- Language codes that we save/apply -->
+    <string-array name="language_values">
+        <item>en</item>
+        <item>af</item>
+    </string-array>
+
+</resources>

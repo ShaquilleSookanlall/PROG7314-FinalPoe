@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        app:constraintSetStart="@+id/start"
+        app:constraintSetEnd="@+id/end"
+        app:duration="1800"
+        app:autoTransition="animateToEnd">
+
+        <KeyFrameSet>
+            <KeyAttribute app:motionTarget="@id/imgLayer5" app:framePosition="0"  android:alpha="1"/>
+            <KeyAttribute app:motionTarget="@id/imgLayer4" app:framePosition="10" android:alpha="1"/>
+            <KeyAttribute app:motionTarget="@id/imgLayer3" app:framePosition="20" android:alpha="1"/>
+            <KeyAttribute app:motionTarget="@id/imgLayer2" app:framePosition="30" android:alpha="1"/>
+            <KeyAttribute app:motionTarget="@id/imgLayer1" app:framePosition="40" android:alpha="1"/>
+
+            <KeyAttribute app:motionTarget="@id/btnGetStarted" app:framePosition="85" android:alpha="0"/>
+            <KeyAttribute app:motionTarget="@id/btnGetStarted" app:framePosition="100" android:alpha="1"/>
+        </KeyFrameSet>
+    </Transition>
+
+    <!-- START: Mountains positioned below screen -->
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@id/imgLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:alpha="1.0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint
+            android:id="@id/tvTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="1.0"
+            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint
+            android:id="@id/imgSun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.3"
+            android:translationY="400dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintVertical_bias="0.50" />
+
+        <!-- LAYER 5 (Farthest back mountain) -->
+        <Constraint
+            android:id="@id/imgLayer5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="300dp"
+            android:elevation="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 4 -->
+        <Constraint
+            android:id="@id/imgLayer4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="350dp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 3 -->
+        <Constraint
+            android:id="@id/imgLayer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="400dp"
+            android:elevation="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="-10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 2 -->
+        <Constraint
+            android:id="@id/imgLayer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="450dp"
+            android:elevation="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="-10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 1 (Closest/front mountain) -->
+        <Constraint
+            android:id="@id/imgLayer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="500dp"
+            android:elevation="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Constraint
+            android:id="@id/btnGetStarted"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="48dp"
+            android:alpha="0.0"
+            android:translationY="80dp"
+            android:elevation="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </ConstraintSet>
+
+    <!-- END: final positions -->
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@id/imgLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:alpha="1.0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint
+            android:id="@id/tvTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:alpha="1.0"
+            app:layout_constraintTop_toBottomOf="@id/imgLogo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Constraint
+            android:id="@id/imgSun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.65"
+            app:layout_constraintVertical_bias="0.50" />
+
+        <!-- LAYER 5 (Farthest back mountain) -->
+        <Constraint
+            android:id="@id/imgLayer5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="-205dp"
+            android:elevation="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 4 -->
+        <Constraint
+            android:id="@id/imgLayer4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="-100dp"
+            android:elevation="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 3 -->
+        <Constraint
+            android:id="@id/imgLayer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="-70dp"
+            android:elevation="7dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="-10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 2 -->
+        <Constraint
+            android:id="@id/imgLayer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="0dp"
+            android:elevation="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="-10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- LAYER 1 (Closest/front mountain) -->
+        <Constraint
+            android:id="@id/imgLayer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="1.0"
+            android:translationY="5dp"
+            android:elevation="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:translationX="10dp"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Constraint
+            android:id="@id/btnGetStarted"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="48dp"
+            android:alpha="1.0"
+            android:translationY="0dp"
+            android:elevation="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </ConstraintSet>
+
+</MotionScene>

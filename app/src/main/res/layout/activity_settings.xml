@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_settings_gradient"
+    android:padding="16dp">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:navigationIcon="@drawable/ic_arrow_back_24"
+        app:navigationContentDescription="@string/back"
+        app:title="@string/menu_settings"
+        app:titleTextColor="@android:color/white"
+        app:titleCentered="true" />
+
+    <TextView
+        android:id="@+id/sectionUnits"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_unit_label"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp"
+        android:letterSpacing="0.05"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#1FFFFFFF"
+        app:cardBackgroundColor="#F9FBFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/settings_use_celsius"
+                android:textColor="#6A79A6"
+                android:textSize="16sp" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchUnits"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:showText="false"
+                app:useMaterialThemeColors="false"
+                app:trackTint="@color/switch_track_tint"
+                app:thumbTint="@color/switch_thumb_tint" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="10dp"
+        android:background="#33FFFFFF" />
+
+    <TextView
+        android:id="@+id/sectionExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_extra_label"
+        android:textAllCaps="true"
+        android:textColor="#FFFFFFFF"
+        android:textSize="12sp"
+        android:letterSpacing="0.05"
+        android:layout_marginBottom="12dp" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#1FFFFFFF"
+        app:cardBackgroundColor="#F9FBFF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/app_name"
+                    android:textColor="#5B6D9A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="v1.0"
+                    android:textColor="#9AACCF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#14000000" />
+
+            <LinearLayout
+                android:id="@+id/rowPreferredLanguage"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:focusable="true">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/preferred_language"
+                    android:textColor="#5B6D9A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tvLanguageValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/language_english"
+                    android:textColor="#9AACCF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#14000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_share"
+                    android:textColor="#5B6D9A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coming_soon"
+                    android:textColor="#9AACCF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#14000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_join"
+                    android:textColor="#5B6D9A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coming_soon"
+                    android:textColor="#9AACCF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#14000000" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="8dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/settings_data_limit"
+                    android:textColor="#5B6D9A"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coming_soon"
+                    android:textColor="#9AACCF"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

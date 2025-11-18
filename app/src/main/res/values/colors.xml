@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="pale_card">#FFFFFFFF</color>      <!-- solid white -->
+    <color name="pale_stroke">#E5E7EB</color>
+    <color name="fg_muted">#616161</color>
+    <color name="input_bg">#FFFFFFFF</color>
+    <color name="input_text">#2E2E2E</color>
+    <color name="input_hint">#802E2E2E</color> <!-- 50% opacity -->
+    <color name="input_icon_tint">#802E2E2E</color>
+    <!-- pill when selected -->
+    <color name="primary_chip_bg">#335287F5</color>   <!-- 20% alpha of primary-ish blue -->
+    <color name="primary_chip_text">#FFFFFFFF</color>
+    <color name="indicator_blue">#2979FF</color>
+
+    <!-- search bar -->
+    <color name="search_pill_bg">#FFFFFFFF</color>
+    <color name="search_icon_tint">#802E2E2E</color>   <!-- soft lavender -->
+    <color name="search_hint_tint">#802E2E2E</color>
+    <color name="search_text">#333333</color>
+    <color name="purple_700">#FFFFFFFF</color>
+
+</resources>

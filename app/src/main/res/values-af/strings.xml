@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RainCheck</string>
+
+    <string name="welcome_title">Welkom by RainCheck</string>
+    <string name="sign_in_with_google">Meld aan met Google</string>
+    <string name="sign_in_failed">Aanmelding het misluk</string>
+    <string name="google_sign_in_cancelled">Google-aanmelding gekanselleer</string>
+    <string name="apple_sign_in_failed">Apple-aanmelding het misluk</string>
+    <string name="sign_in_with_email">Meld aan met e-pos</string>
+    <string name="create_account">Skep rekening</string>
+
+    <string name="menu_settings">Instellings</string>
+    <string name="menu_sign_out">Meld af</string>
+    <string name="settings_use_celsius">Gebruik Celsius (C)</string>
+
+    <string name="preferred_language">Voorkeurtaal</string>
+    <string name="language_english">Engels</string>
+    <string name="language_afrikaans">Afrikaans</string>
+
+    <string name="desc_hourly_forecast_list">Lys van uurlikse voorspellings</string>
+    <string name="desc_hourly_icon">Uurlikse weerikoon</string>
+    <string name="desc_weekly_forecast_list">Lys van weeklikse voorspellings</string>
+
+    <string name="cancel">Kanselleer</string>
+    <string name="navigation_drawer_open">Maak navigasieskerm oop</string>
+    <string name="navigation_drawer_close">Maak navigasieskerm toe</string>
+    <string name="city_name">Stadsnaam</string>
+    <string name="search">Soek</string>
+    <string name="search_city_hint">Soek vir stad</string>
+    <string name="yesterday">Gister</string>
+    <string name="today">Vandag</string>
+    <string name="tomorrow">More</string>
+    <string name="this_week">Hierdie week</string>
+    <string name="search_city">Soek stad</string>
+    <string name="no_results">Geen resultate vir %1$s nie</string>
+
+    <string name="wind_placeholder">Wind - km/h</string>
+    <string name="wind_spoken_desc">Huidige windsnelheid</string>
+    <string name="wind_kmh">Wind %1$d km/h</string>
+    <string name="weather_icon">Weerikoon</string>
+
+    <string name="settings_title">Instellings</string>
+    <string name="settings_units_label">Temperatuureenhede</string>
+    <string name="settings_units_celsius">Gebruik Celsius (C)</string>
+    <string name="settings_language_label">Toepassingstaal</string>
+    <string name="settings_preferred_language">Voorkeurtaal</string>
+
+    <string name="saved_locations">Gestoorde liggings</string>
+
+    <string name="enter_cities">Voer stadsnaam in</string>
+    <string name="location">Ligging</string>
+    <string name="weather">Weer</string>
+    <string name="back">Terug</string>
+
+    <string name="weather_drizzle">Motreën</string>
+    <string name="weather_sunny">Sonnig</string>
+    <string name="weather_clear_sky">Skoon lug</string>
+    <string name="weather_rain">Reën</string>
+    <string name="weather_light_rain">Ligte reën</string>
+    <string name="weather_thunderstorm">Donderstorm</string>
+    <string name="weather_cloudy">Bewolk</string>
+    <string name="weather_overcast_clouds">Beto Swaarbewolk</string>
+    <string name="weather_partly_cloudy">Gedeeltelik bewolk</string>
+    <string name="weather_windy">Winderig</string>
+    <string name="weather_snow">Sneeu</string>
+    <string name="weather_mist">Mis</string>
+    <string name="weather_fog">Newel</string>
+
+    <string name="settings_share">Deel</string>
+    <string name="settings_join">Sluit by ons aan</string>
+    <string name="settings_data_limit">Mobiele datalimiet</string>
+    <string name="coming_soon">Kom binnekort</string>
+    <string name="settings_unit_label">Eenheid</string>
+    <string name="settings_extra_label">Ekstra</string>
+
+</resources>

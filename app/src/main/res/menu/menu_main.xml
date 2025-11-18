@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_24"
+        android:title="@string/search"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_save_location"
+        android:title="Save location"
+        android:icon="@android:drawable/ic_menu_save"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_saved_locations"
+        android:title="Saved locations"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        app:showAsAction="never" />
+
+    <!-- NEW: share current weather -->
+    <item
+        android:id="@+id/action_share"
+        android:title="Share weather"
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="never" />
+</menu>
