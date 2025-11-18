@@ -3,15 +3,14 @@
 /app/google-services.json
 
 # Contains keystore passwords
-keystore.properties
 *.properties
 
 # Keystore files
 *.keystore
 
-# --- ANDROID STUDIO ---
+# --- ANDROID STUDIO / INTELLIJ ---
 # IDE files and project-specific settings
-/.idea/
+.idea/
 *.iml
 
 # --- GRADLE ---
@@ -20,7 +19,7 @@ keystore.properties
 /app/build/
 local.properties
 
-# --- BUILD CACHES ---
+# --- BUILD CACHES & LOGS ---
 .kotlin/
 .cxx/
 .externalNativeBuild/
