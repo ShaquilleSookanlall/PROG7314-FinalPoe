@@ -1,15 +1,32 @@
+# --- CRITICAL: SENSITIVE FILES ---
+# Contains API keys and project secrets
+/app/google-services.json
+
+# Contains keystore passwords
+keystore.properties
+*.properties
+
+# Keystore files
+*.keystore
+
+# --- ANDROID STUDIO ---
+# IDE files and project-specific settings
+/.idea/
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+
+# --- GRADLE ---
+.gradle/
+/build/
+/app/build/
 local.properties
+
+# --- BUILD CACHES ---
+.kotlin/
+.cxx/
+.externalNativeBuild/
+
+# --- OTHER ---
+# Mac temporary files
+.DS_Store
+# Build captures
+/captures/
