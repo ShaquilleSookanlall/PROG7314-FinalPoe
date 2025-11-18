@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -134,11 +133,9 @@ class MainActivity : AppCompatActivity() {
         navView.layoutParams = navView.layoutParams.apply {
             width = (resources.displayMetrics.widthPixels * 0.75f).toInt()
         }
-        // UPDATED: Added nav_home and nav_saved_locations to drawer menu
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    // Already on home, just close drawer
                     drawerLayout.closeDrawers()
                 }
                 R.id.nav_saved_locations -> {
@@ -167,11 +164,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Header defaults
-        binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp) // Use string
+        binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp)
         binding.tvHeaderCond.text = getString(R.string.search_city_hint)
         binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
 
-        // ===== Overlay wiring =====
+        // ===== OPTION 3: RecyclerView-only search (no AutoCompleteTextView dropdown) =====
         suggestionAdapter = SuggestionAdapter { clicked ->
             hideSearchOverlay()
             searchAndShow(clicked.displayName)
@@ -179,30 +176,24 @@ class MainActivity : AppCompatActivity() {
         binding.rvSuggestions.layoutManager = LinearLayoutManager(this)
         binding.rvSuggestions.adapter = suggestionAdapter
 
-        val dropdownAdapter = ArrayAdapter<String>(
-            this, android.R.layout.simple_dropdown_item_1line
-        )
-        binding.overlayEtCity.setAdapter(dropdownAdapter)
-
-        // Live autocomplete
+        // Live search with RecyclerView cards only
         binding.overlayEtCity.doOnTextChanged { text, _, _, _ ->
             searchJob?.cancel()
             val query = text?.toString()?.trim().orEmpty()
+
+            // Clear suggestions if query too short
             if (query.length < 2) {
-                dropdownAdapter.clear()
                 suggestionAdapter.submitList(emptyList())
                 return@doOnTextChanged
             }
+
+            // Show loading state (optional - you could add a progress indicator)
             searchJob = lifecycleScope.launch {
-                delay(300)
+                delay(300) // Debounce for better UX
                 try {
                     val results = withContext(Dispatchers.IO) { repo.searchPlaces(query) }
 
-                    val names = results.map { it.toString() }
-                    dropdownAdapter.clear()
-                    dropdownAdapter.addAll(names)
-                    if (!binding.overlayEtCity.isPopupShowing) binding.overlayEtCity.showDropDown()
-
+                    // Build suggestion cards with live weather data
                     val cards = results.map { place ->
                         val lat = place.latitude ?: 0.0
                         val lon = place.longitude ?: 0.0
@@ -216,12 +207,17 @@ class MainActivity : AppCompatActivity() {
                             weatherCode = fc?.current?.weathercode
                         )
                     }
+
+                    // Update RecyclerView with suggestion cards
                     suggestionAdapter.submitList(cards)
+
                 } catch (e: Exception) {
-                    Timber.e(e, "Autocomplete failed")
+                    Timber.e(e, "Search failed")
+                    suggestionAdapter.submitList(emptyList())
                 }
             }
         }
+        // ====================================================================================
 
         // End icon triggers search
         binding.overlayTilCity.setEndIconOnClickListener {
@@ -245,7 +241,7 @@ class MainActivity : AppCompatActivity() {
         // Tap on scrim to close
         binding.overlayScrim.setOnClickListener { hideSearchOverlay() }
 
-        // ===== NEW: Save Button Click Listener =====
+        // ===== Save Button Click Listener =====
         binding.btnSaveLocation.setOnClickListener {
             saveCurrentLocation()
         }
@@ -260,7 +256,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Try load default location at cold start (harmless if none)
+        // Try load default location at cold start
         lifecycleScope.launch {
             try {
                 val def = withContext(Dispatchers.IO) { cache.getDefaultLocation() }
@@ -273,7 +269,7 @@ class MainActivity : AppCompatActivity() {
                         bindForecast(fc, lastUseCelsius)
                         binding.topAppBar.title = it.name
                         lastLat = it.latitude; lastLon = it.longitude
-                        binding.btnSaveLocation.visibility = View.GONE // Hide save for default
+                        binding.btnSaveLocation.visibility = View.GONE
                         withContext(Dispatchers.IO) { cache.saveForecast(it.name, it.latitude, it.longitude, fc) }
                     } catch (_: Exception) {
                         val cached = withContext(Dispatchers.IO) { cache.getForecast(it.name) }
@@ -283,7 +279,7 @@ class MainActivity : AppCompatActivity() {
                             bindForecast(c, lastUseCelsius)
                             binding.topAppBar.title = it.name
                             lastLat = it.latitude; lastLon = it.longitude
-                            binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
+                            binding.btnSaveLocation.visibility = View.GONE
                         }
                     } finally {
                         showLoading(false)
@@ -350,12 +346,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun weatherDesc(code: Int): Int = when (code) {
         0 -> R.string.weather_clear_sky
-        in 1..3 -> R.string.weather_clear_sky // Using "Clear" for "Mainly Clear"
+        in 1..3 -> R.string.weather_clear_sky
         in 45..48 -> R.string.weather_fog
         in 51..67 -> R.string.weather_drizzle
         in 71..77 -> R.string.weather_snow
-        in 80..82 -> R.string.weather_rain // Using "Rain" for "Showers"
-        in 85..86 -> R.string.weather_snow // Using "Snow" for "Snow Showers"
+        in 80..82 -> R.string.weather_rain
+        in 85..86 -> R.string.weather_snow
         in 95..99 -> R.string.weather_thunderstorm
         else -> R.string.weather_partly_cloudy
     }
@@ -375,7 +371,7 @@ class MainActivity : AppCompatActivity() {
                     binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
                     hourAdapter.submit(emptyList())
                     dailyAdapter.submit(emptyList())
-                    binding.btnSaveLocation.visibility = View.GONE // Hide save
+                    binding.btnSaveLocation.visibility = View.GONE
                     return@launch
                 }
                 val p = places.first()
@@ -392,7 +388,7 @@ class MainActivity : AppCompatActivity() {
 
                 bindForecast(fc, lastUseCelsius)
 
-                // ===== MODIFIED: Check if saved, then show/hide button =====
+                // Check if saved, then show/hide button
                 val isAlreadySaved = withContext(Dispatchers.IO) { cache.getByName(name) != null }
                 if (!isAlreadySaved) {
                     binding.btnSaveLocation.visibility = View.VISIBLE
@@ -400,9 +396,8 @@ class MainActivity : AppCompatActivity() {
                     binding.btnSaveLocation.visibility = View.GONE
                 }
 
-                // ===== MODIFIED: Only save forecast, NOT location =====
+                // Only save forecast, NOT location
                 withContext(Dispatchers.IO) {
-                    // cache.upsertLocation(name = name, lat = lat, lon = lon, makeDefault = false) // <-- AUTO-SAVE REMOVED
                     cache.saveForecast(name = name, lat = lat, lon = lon, response = fc)
                     cache.purgeOlderThan(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000)
                 }
@@ -430,7 +425,7 @@ class MainActivity : AppCompatActivity() {
                     lastUseCelsius = withContext(Dispatchers.IO) { settings.useCelsius.first() }
                     bindForecast(cached, lastUseCelsius)
                     binding.topAppBar.title = cachedName
-                    binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
+                    binding.btnSaveLocation.visibility = View.GONE
                 } else {
                     binding.topAppBar.title = ""
                     binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp)
@@ -438,7 +433,7 @@ class MainActivity : AppCompatActivity() {
                     binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
                     hourAdapter.submit(emptyList())
                     dailyAdapter.submit(emptyList())
-                    binding.btnSaveLocation.visibility = View.GONE // Hide save for error
+                    binding.btnSaveLocation.visibility = View.GONE
                 }
             } finally {
                 showLoading(false)
@@ -446,7 +441,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // ===== NEW: Helper function to manually save the current location =====
+    // Helper function to manually save the current location
     private fun saveCurrentLocation() {
         val name = binding.topAppBar.title?.toString().orEmpty()
         val lat = lastLat
@@ -488,7 +483,7 @@ class MainActivity : AppCompatActivity() {
                         bindForecast(fc, lastUseCelsius)
                         binding.topAppBar.title = def.name
                         lastLat = def.latitude; lastLon = def.longitude
-                        binding.btnSaveLocation.visibility = View.GONE // Hide save for default
+                        binding.btnSaveLocation.visibility = View.GONE
                         withContext(Dispatchers.IO) { cache.saveForecast(def.name, def.latitude, def.longitude, fc) }
                     } catch (_: Exception) {
                         val cached = withContext(Dispatchers.IO) { cache.getForecast(def.name) }
@@ -498,7 +493,7 @@ class MainActivity : AppCompatActivity() {
                             bindForecast(c, lastUseCelsius)
                             binding.topAppBar.title = def.name
                             lastLat = def.latitude; lastLon = def.longitude
-                            binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
+                            binding.btnSaveLocation.visibility = View.GONE
                         }
                     }
                 }
@@ -537,10 +532,8 @@ class MainActivity : AppCompatActivity() {
                 val hour = java.time.LocalDateTime.parse(ts).hour
                 val label = if (hour == nowHour) "Now" else ts.substringAfter('T').substring(0, 5)
 
-                // ===== THIS IS THE FIX for '!!' WARNING =====
                 val tempC = if (hour == nowHour && fc.current?.temperature != null)
                     fc.current.temperature else temps.getOrNull(i) ?: 0.0
-                // ===============================================
 
                 HourUi(time = label, temp = formatTemp(tempC, useC))
             }
@@ -560,15 +553,10 @@ class MainActivity : AppCompatActivity() {
                         .take(5)
                         .map { i ->
                             val date = java.time.LocalDate.parse(d.time[i])
-
-                            // Create a formatter that uses the phone's default language
                             val dayFormatter = java.time.format.DateTimeFormatter
                                 .ofPattern("EEEE", java.util.Locale.getDefault())
-
-                            // Format the date to get the localized day name
                             val label = date.format(dayFormatter)
                                 .replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
-
 
                             DayUi(
                                 label = label,
@@ -587,7 +575,6 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // ===== MODIFIED: Handle both Share and new Search button =====
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_search -> {
@@ -601,8 +588,6 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
-    // ===== Helpers: notifications + scheduling =====
 
     private fun requestPostNotificationsIfNeeded() {
         if (Build.VERSION.SDK_INT >= 33) {
@@ -629,7 +614,6 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    // ===== NEW: build and fire share intent =====
     private fun shareCurrentWeather() {
         val city = binding.topAppBar.title?.toString()?.trim().orEmpty()
         val current = lastForecast?.current
@@ -673,10 +657,9 @@ private class SuggestionAdapter(
     fun submitList(list: List<PlaceSuggestion>) {
         items.clear()
         items.addAll(list)
-        notifyDataSetChanged() // This is the line with the 'notifyDataSetChanged' warning. It's safe to ignore for this project.
+        notifyDataSetChanged()
     }
 
-    // ===== FIX 2: Corrected 'android.view.ViewGroup' =====
     override fun onCreateViewHolder(parent: android.view.ViewGroup, viewType: Int): SuggestionVH {
         val v = android.view.LayoutInflater.from(parent.context)
             .inflate(R.layout.item_suggestion, parent, false)
