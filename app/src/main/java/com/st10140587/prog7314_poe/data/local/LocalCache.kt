@@ -39,6 +39,13 @@ class LocalCache(context: Context) {
         forecasts.deleteByName(name)
     }
 
+    // ===== THIS IS THE NEW FUNCTION YOU NEED TO ADD =====
+    /**
+     * Finds a location by its exact name (used by MainActivity to check if saved).
+     */
+    suspend fun getByName(name: String): LocationEntity? = locations.getByName(name)
+    // ====================================================
+
     // ----- Forecast cache -----
     suspend fun saveForecast(name: String, lat: Double, lon: Double, response: ForecastResponse) {
         val json = gson.toJson(response)

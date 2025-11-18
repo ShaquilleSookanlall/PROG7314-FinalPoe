@@ -74,4 +74,8 @@
     <string name="settings_unit_label">Unit</string>
     <string name="settings_extra_label">Extra</string>
 
+    <string name="menu_share_weather">Share weather</string>
+    <string name="save_location">Save Location</string>
+    <string name="weather_placeholder_temp">--°</string>
+
 </resources>

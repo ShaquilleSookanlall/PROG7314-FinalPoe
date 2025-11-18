@@ -2,11 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Share Weather - Only button on top right now -->
+    <item
+        android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/search"
+        app:showAsAction="ifRoom"
+        app:iconTint="@android:color/white" />
+
     <item
         android:id="@+id/action_share"
         android:icon="@android:drawable/ic_menu_share"
-        android:title="Share weather"
+        android:title="@string/menu_share_weather"
         app:showAsAction="always" />
 
 </menu>

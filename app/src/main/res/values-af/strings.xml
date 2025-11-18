@@ -75,4 +75,8 @@
     <string name="settings_unit_label">Eenheid</string>
     <string name="settings_extra_label">Ekstra</string>
 
+    <string name="menu_share_weather">Deel weer</string>
+    <string name="save_location">Stoor ligging</string>
+    <string name="weather_placeholder_temp">--°</string>
+
 </resources>

@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.PROG7314POE" parent="Theme.Material3.Light.NoActionBar">
-        <!-- prevent auto dark -->
-        <item name="android:forceDarkAllowed">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <!-- make app surfaces white -->
         <item name="android:windowBackground">@color/white</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorSurfaceVariant">@color/white</item>
 
-        <!-- dark text/icons on white -->
         <item name="colorOnSurface">@color/black</item>
         <item name="colorOnBackground">@color/black</item>
 

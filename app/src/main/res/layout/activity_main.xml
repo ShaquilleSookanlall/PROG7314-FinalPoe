@@ -67,7 +67,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="--°"
+                            android:text="@string/weather_placeholder_temp"
                             android:textColor="@android:color/white"
                             android:textSize="64sp"
                             android:textStyle="bold" />
@@ -80,7 +80,6 @@
                             android:textColor="@android:color/white"
                             android:textSize="18sp" />
 
-                        <!-- NEW: Wind speed line -->
                         <TextView
                             android:id="@+id/tvHeaderWind"
                             android:layout_width="wrap_content"
@@ -91,6 +90,20 @@
                             android:textSize="14sp"
                             android:contentDescription="@string/wind_spoken_desc"/>
                     </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSaveLocation"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="16dp"
+                        android:text="@string/save_location"
+                        android:textColor="@android:color/white"
+                        app:icon="@android:drawable/ic_menu_save"
+                        app:iconTint="@android:color/white"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
                 </FrameLayout>
 
                 <ProgressBar
@@ -138,6 +151,7 @@
                                 android:text="@string/yesterday"
                                 android:textAlignment="center"
                                 android:textColor="@color/chip_text"
+                                android:minHeight="48dp"
                                 app:chipStrokeWidth="1dp"
                                 app:chipStrokeColor="@color/chip_stroke"
                                 app:chipBackgroundColor="@color/chip_bg"
@@ -160,6 +174,7 @@
                                 android:text="@string/today"
                                 android:textAlignment="center"
                                 android:textColor="@color/chip_text"
+                                android:minHeight="48dp"
                                 app:chipStrokeWidth="1dp"
                                 app:chipStrokeColor="@color/chip_stroke"
                                 app:chipBackgroundColor="@color/chip_bg"
@@ -181,6 +196,7 @@
                                 android:text="@string/tomorrow"
                                 android:textAlignment="center"
                                 android:textColor="@color/chip_text"
+                                android:minHeight="48dp"
                                 app:chipStrokeWidth="1dp"
                                 app:chipStrokeColor="@color/chip_stroke"
                                 app:chipBackgroundColor="@color/chip_bg"
@@ -196,7 +212,8 @@
                             android:layout_marginTop="16dp"
                             android:overScrollMode="never"
                             android:clipToPadding="false"
-                            android:paddingHorizontal="8dp" />
+                            android:paddingHorizontal="8dp"
+                            android:contentDescription="@string/desc_hourly_forecast_list" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -235,9 +252,7 @@
                             android:text="@string/this_week"
                             android:textStyle="bold"
                             android:textSize="16sp"
-                            android:layout_marginBottom="8dp"
-                            android:accessibilityHeading="true" />
-
+                            android:layout_marginBottom="8dp" />
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvWeekly"
                             android:layout_width="match_parent"
@@ -249,7 +264,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <!-- SEARCH OVERLAY (unchanged) -->
         <FrameLayout
             android:id="@+id/searchOverlay"
             android:layout_width="match_parent"
@@ -257,6 +271,7 @@
             android:visibility="gone"
             android:background="#B3000000"
             android:clickable="true"
+            android:focusable="true"
             android:focusableInTouchMode="true"
             android:elevation="8dp">
 
@@ -265,7 +280,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/cancel"
-                android:clickable="true" />
+                android:clickable="true"
+                android:focusable="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"

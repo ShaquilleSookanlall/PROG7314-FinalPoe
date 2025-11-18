@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Header defaults
-        binding.tvHeaderTemp.text = "--°"
+        binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp) // Use string
         binding.tvHeaderCond.text = getString(R.string.search_city_hint)
         binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
 
@@ -245,6 +245,11 @@ class MainActivity : AppCompatActivity() {
         // Tap on scrim to close
         binding.overlayScrim.setOnClickListener { hideSearchOverlay() }
 
+        // ===== NEW: Save Button Click Listener =====
+        binding.btnSaveLocation.setOnClickListener {
+            saveCurrentLocation()
+        }
+
         // observe unit changes and re-render from cache
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -268,6 +273,7 @@ class MainActivity : AppCompatActivity() {
                         bindForecast(fc, lastUseCelsius)
                         binding.topAppBar.title = it.name
                         lastLat = it.latitude; lastLon = it.longitude
+                        binding.btnSaveLocation.visibility = View.GONE // Hide save for default
                         withContext(Dispatchers.IO) { cache.saveForecast(it.name, it.latitude, it.longitude, fc) }
                     } catch (_: Exception) {
                         val cached = withContext(Dispatchers.IO) { cache.getForecast(it.name) }
@@ -277,6 +283,7 @@ class MainActivity : AppCompatActivity() {
                             bindForecast(c, lastUseCelsius)
                             binding.topAppBar.title = it.name
                             lastLat = it.latitude; lastLon = it.longitude
+                            binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
                         }
                     } finally {
                         showLoading(false)
@@ -363,11 +370,12 @@ class MainActivity : AppCompatActivity() {
                 val places = withContext(Dispatchers.IO) { repo.searchPlaces(query) }
                 if (places.isEmpty()) {
                     binding.topAppBar.title = ""
-                    binding.tvHeaderTemp.text = "--°"
+                    binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp)
                     binding.tvHeaderCond.text = getString(R.string.no_results, query)
                     binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
                     hourAdapter.submit(emptyList())
                     dailyAdapter.submit(emptyList())
+                    binding.btnSaveLocation.visibility = View.GONE // Hide save
                     return@launch
                 }
                 val p = places.first()
@@ -384,9 +392,17 @@ class MainActivity : AppCompatActivity() {
 
                 bindForecast(fc, lastUseCelsius)
 
-                // Save to cache + upsert location, purge old
+                // ===== MODIFIED: Check if saved, then show/hide button =====
+                val isAlreadySaved = withContext(Dispatchers.IO) { cache.getByName(name) != null }
+                if (!isAlreadySaved) {
+                    binding.btnSaveLocation.visibility = View.VISIBLE
+                } else {
+                    binding.btnSaveLocation.visibility = View.GONE
+                }
+
+                // ===== MODIFIED: Only save forecast, NOT location =====
                 withContext(Dispatchers.IO) {
-                    cache.upsertLocation(name = name, lat = lat, lon = lon, makeDefault = false)
+                    // cache.upsertLocation(name = name, lat = lat, lon = lon, makeDefault = false) // <-- AUTO-SAVE REMOVED
                     cache.saveForecast(name = name, lat = lat, lon = lon, response = fc)
                     cache.purgeOlderThan(System.currentTimeMillis() - 7L * 24 * 60 * 60 * 1000)
                 }
@@ -414,16 +430,43 @@ class MainActivity : AppCompatActivity() {
                     lastUseCelsius = withContext(Dispatchers.IO) { settings.useCelsius.first() }
                     bindForecast(cached, lastUseCelsius)
                     binding.topAppBar.title = cachedName
+                    binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
                 } else {
                     binding.topAppBar.title = ""
-                    binding.tvHeaderTemp.text = "--°"
+                    binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp)
                     binding.tvHeaderCond.text = e.localizedMessage ?: "Error"
                     binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
                     hourAdapter.submit(emptyList())
                     dailyAdapter.submit(emptyList())
+                    binding.btnSaveLocation.visibility = View.GONE // Hide save for error
                 }
             } finally {
                 showLoading(false)
+            }
+        }
+    }
+
+    // ===== NEW: Helper function to manually save the current location =====
+    private fun saveCurrentLocation() {
+        val name = binding.topAppBar.title?.toString().orEmpty()
+        val lat = lastLat
+        val lon = lastLon
+
+        if (name.isBlank() || lat == null || lon == null) {
+            Toast.makeText(this, "Cannot save location", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    cache.upsertLocation(name, lat, lon, makeDefault = false)
+                }
+                Toast.makeText(this@MainActivity, "Saved: $name", Toast.LENGTH_SHORT).show()
+                binding.btnSaveLocation.visibility = View.GONE
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to save location")
+                Toast.makeText(this@MainActivity, "Error saving location", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -445,6 +488,7 @@ class MainActivity : AppCompatActivity() {
                         bindForecast(fc, lastUseCelsius)
                         binding.topAppBar.title = def.name
                         lastLat = def.latitude; lastLon = def.longitude
+                        binding.btnSaveLocation.visibility = View.GONE // Hide save for default
                         withContext(Dispatchers.IO) { cache.saveForecast(def.name, def.latitude, def.longitude, fc) }
                     } catch (_: Exception) {
                         val cached = withContext(Dispatchers.IO) { cache.getForecast(def.name) }
@@ -454,6 +498,7 @@ class MainActivity : AppCompatActivity() {
                             bindForecast(c, lastUseCelsius)
                             binding.topAppBar.title = def.name
                             lastLat = def.latitude; lastLon = def.longitude
+                            binding.btnSaveLocation.visibility = View.GONE // Hide save for cached
                         }
                     }
                 }
@@ -474,7 +519,7 @@ class MainActivity : AppCompatActivity() {
             val wind = (cur.windspeed ?: 0.0).roundToInt()
             binding.tvHeaderWind.text = getString(R.string.wind_kmh, wind)
         } ?: run {
-            binding.tvHeaderTemp.text = "--°"
+            binding.tvHeaderTemp.text = getString(R.string.weather_placeholder_temp)
             binding.tvHeaderCond.text = getString(R.string.search_city_hint)
             binding.tvHeaderWind.text = getString(R.string.wind_placeholder)
         }
@@ -491,8 +536,12 @@ class MainActivity : AppCompatActivity() {
                 if (!ts.startsWith(targetDate)) return@mapIndexedNotNull null
                 val hour = java.time.LocalDateTime.parse(ts).hour
                 val label = if (hour == nowHour) "Now" else ts.substringAfter('T').substring(0, 5)
+
+                // ===== THIS IS THE FIX for '!!' WARNING =====
                 val tempC = if (hour == nowHour && fc.current?.temperature != null)
-                    fc.current.temperature!! else temps.getOrNull(i) ?: 0.0
+                    fc.current.temperature else temps.getOrNull(i) ?: 0.0
+                // ===============================================
+
                 HourUi(time = label, temp = formatTemp(tempC, useC))
             }
         }
@@ -538,9 +587,13 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    // UPDATED: Simplified to only handle share button
+    // ===== MODIFIED: Handle both Share and new Search button =====
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_search -> {
+                showSearchOverlay()
+                true
+            }
             R.id.action_share -> {
                 shareCurrentWeather()
                 true
@@ -620,7 +673,7 @@ private class SuggestionAdapter(
     fun submitList(list: List<PlaceSuggestion>) {
         items.clear()
         items.addAll(list)
-        notifyDataSetChanged()
+        notifyDataSetChanged() // This is the line with the 'notifyDataSetChanged' warning. It's safe to ignore for this project.
     }
 
     // ===== FIX 2: Corrected 'android.view.ViewGroup' =====
