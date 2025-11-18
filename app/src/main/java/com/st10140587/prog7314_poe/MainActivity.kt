@@ -134,8 +134,16 @@ class MainActivity : AppCompatActivity() {
         navView.layoutParams = navView.layoutParams.apply {
             width = (resources.displayMetrics.widthPixels * 0.75f).toInt()
         }
+        // UPDATED: Added nav_home and nav_saved_locations to drawer menu
         navView.setNavigationItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.nav_home -> {
+                    // Already on home, just close drawer
+                    drawerLayout.closeDrawers()
+                }
+                R.id.nav_saved_locations -> {
+                    locationsLauncher.launch(Intent(this, LocationsActivity::class.java))
+                }
                 R.id.nav_settings -> startActivity(Intent(this, SettingsActivity::class.java))
                 R.id.nav_sign_out -> {
                     FirebaseAuth.getInstance().signOut()
@@ -530,40 +538,13 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    // UPDATED: Simplified to only handle share button
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_search -> {
-                showSearchOverlay();
-                true
-            }
-
-            // Save current city
-            R.id.action_save_location -> {
-                val name = binding.topAppBar.title?.toString()?.trim().orEmpty()
-                val lat = lastLat; val lon = lastLon
-                if (name.isNotEmpty() && lat != null && lon != null) {
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        cache.upsertLocation(name = name, lat = lat, lon = lon, makeDefault = false)
-                    }
-                    Toast.makeText(this, "Saved \"$name\"", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "Search a city first to save it", Toast.LENGTH_SHORT).show()
-                }
-                true
-            }
-
-            // Open saved locations screen FOR RESULT
-            R.id.action_saved_locations -> {
-                locationsLauncher.launch(Intent(this, LocationsActivity::class.java))
-                true
-            }
-
-            // NEW: share current weather
             R.id.action_share -> {
                 shareCurrentWeather()
                 true
             }
-
             else -> super.onOptionsItemSelected(item)
         }
     }

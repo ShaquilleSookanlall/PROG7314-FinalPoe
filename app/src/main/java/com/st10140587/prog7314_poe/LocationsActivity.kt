@@ -3,13 +3,18 @@ package com.st10140587.prog7314_poe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.st10140587.prog7314_poe.data.local.LocalCache
 import com.st10140587.prog7314_poe.data.local.LocationEntity
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +30,9 @@ class LocationsActivity : AppCompatActivity() {
 
     private lateinit var cache: LocalCache
     private lateinit var rv: RecyclerView
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navView: NavigationView
+
     private val adapter = LocationsAdapter(
         onClick = { loc -> setDefault(loc) },
         onLongClick = { loc -> deleteLocation(loc) }
@@ -34,14 +42,46 @@ class LocationsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_locations)
 
-        // Setup toolbar with hamburger menu
+        // Setup toolbar with drawer
         val toolbar = findViewById<MaterialToolbar>(R.id.topAppBar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.saved_locations)
 
-        // Handle hamburger menu click - navigate back to MainActivity
+        // Setup drawer navigation (same as MainActivity)
+        drawerLayout = findViewById(R.id.drawerLayout)
+        navView = findViewById(R.id.navigationView)
+
         toolbar.setNavigationOnClickListener {
-            finish() // Close this activity and return to MainActivity
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
+        // Set drawer width (75% of screen width, same as MainActivity)
+        navView.layoutParams = navView.layoutParams.apply {
+            width = (resources.displayMetrics.widthPixels * 0.75f).toInt()
+        }
+
+        // Handle navigation item clicks
+        navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    // Navigate back to MainActivity
+                    finish()
+                }
+                R.id.nav_saved_locations -> {
+                    // Already on saved locations, just close drawer
+                    drawerLayout.closeDrawers()
+                }
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
+                }
+                R.id.nav_sign_out -> {
+                    FirebaseAuth.getInstance().signOut()
+                    startActivity(Intent(this, SignInActivity::class.java))
+                    finish()
+                }
+            }
+            drawerLayout.closeDrawers()
+            true
         }
 
         cache = LocalCache(this)
@@ -92,7 +132,6 @@ class LocationsActivity : AppCompatActivity() {
         }
     }
 
-
     private fun deleteLocation(loc: LocationEntity) {
         lifecycleScope.launch(Dispatchers.IO) {
             cache.deleteLocation(loc.name)
@@ -100,6 +139,15 @@ class LocationsActivity : AppCompatActivity() {
                 Toast.makeText(this@LocationsActivity, "Deleted: ${loc.name}", Toast.LENGTH_SHORT).show()
                 load()
             }
+        }
+    }
+
+    // Handle back button to close drawer if open
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
         }
     }
 }

@@ -1,9 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Homepage -->
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Home" />
+
+    <!-- Saved Locations -->
+    <item
+        android:id="@+id/nav_saved_locations"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="Saved locations" />
+
+    <!-- Settings -->
     <item
         android:id="@+id/nav_settings"
-        android:title="@string/menu_settings" />
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Settings" />
 
+    <!-- Sign Out -->
     <item
         android:id="@+id/nav_sign_out"
-        android:title="@string/menu_sign_out" />
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="Sign out" />
+
 </menu>
