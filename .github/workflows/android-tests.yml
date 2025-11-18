@@ -1,0 +1,125 @@
+name: Android CI - Unit Tests
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+        cache: 'gradle'
+    
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    
+    - name: Cache Gradle packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    
+    - name: Display project structure
+      run: |
+        echo "Project structure:"
+        ls -la
+        echo "App module structure:"
+        ls -la app/src/ || echo "No app/src directory"
+        
+    - name: Build project
+      run: ./gradlew build -x test --stacktrace
+      
+    - name: Run unit tests (trying testDebugUnitTest)
+      run: ./gradlew :app:testDebugUnitTest --stacktrace
+      continue-on-error: true
+      id: test_debug
+      
+    - name: Run unit tests (trying test as fallback)
+      if: steps.test_debug.outcome == 'failure'
+      run: ./gradlew :app:test --stacktrace
+      
+    - name: Display test results location
+      if: always()
+      run: |
+        echo "Looking for test results..."
+        find . -name "TEST-*.xml" -type f || echo "No XML test results found"
+        find . -path "*/build/test-results/*" -type f || echo "No test-results directory found"
+        find . -path "*/build/reports/tests/*" -type d || echo "No test reports directory found"
+      
+    - name: Upload test results (XML)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-xml
+        path: |
+          **/build/test-results/**/*.xml
+        if-no-files-found: warn
+        retention-days: 30
+        
+    - name: Upload test reports (HTML)
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-reports-html
+        path: |
+          **/build/reports/tests/**
+        if-no-files-found: warn
+        retention-days: 30
+        
+    - name: Test Summary
+      if: always()
+      run: |
+        echo "## Test Results 📊" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Find and display test result files
+        TEST_FILES=$(find . -name "TEST-*.xml" -type f 2>/dev/null | wc -l)
+        
+        if [ $TEST_FILES -gt 0 ]; then
+          echo "✅ Found $TEST_FILES test result file(s)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Parse test results
+          TOTAL_TESTS=0
+          FAILED_TESTS=0
+          
+          for file in $(find . -name "TEST-*.xml" -type f 2>/dev/null); do
+            if command -v xmllint &> /dev/null; then
+              TESTS=$(xmllint --xpath "string(//testsuite/@tests)" "$file" 2>/dev/null || echo "0")
+              FAILURES=$(xmllint --xpath "string(//testsuite/@failures)" "$file" 2>/dev/null || echo "0")
+              TOTAL_TESTS=$((TOTAL_TESTS + TESTS))
+              FAILED_TESTS=$((FAILED_TESTS + FAILURES))
+            fi
+          done
+          
+          if [ $TOTAL_TESTS -gt 0 ]; then
+            PASSED_TESTS=$((TOTAL_TESTS - FAILED_TESTS))
+            echo "**Total Tests:** $TOTAL_TESTS" >> $GITHUB_STEP_SUMMARY
+            echo "**Passed:** ✅ $PASSED_TESTS" >> $GITHUB_STEP_SUMMARY
+            echo "**Failed:** ❌ $FAILED_TESTS" >> $GITHUB_STEP_SUMMARY
+          fi
+        else
+          echo "⚠️ No test results found" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Possible reasons:**" >> $GITHUB_STEP_SUMMARY
+          echo "- Build failed before tests could run" >> $GITHUB_STEP_SUMMARY
+          echo "- Test task name is non-standard" >> $GITHUB_STEP_SUMMARY
+          echo "- No tests are defined" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Check the workflow logs above for more details." >> $GITHUB_STEP_SUMMARY
+        fi
