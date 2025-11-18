@@ -1,409 +1,591 @@
-# Weather App 🌤️
+# Weather App ☀️
 
 A modern Android weather application built with Kotlin that provides real-time weather forecasts, location management, and personalized weather alerts. Features biometric authentication, multi-language support, and offline caching capabilities.
+
+**Student:** Shaquille Sookanlall  
+**Student Number:** ST10140587  
+**Institution:** The Independent Institute of Education (IIE)  
+**Course:** PROG7312 - Programming 3B
+
+---
 
 ## 📱 Features
 
 ### Core Functionality
-- **Real-time Weather Data**: Fetches current weather conditions, hourly forecasts, and 7-day forecasts using the Open-Meteo API
-- **Location Search**: Search and save multiple cities worldwide
-- **Saved Locations**: Manage favorite locations with the ability to set a default location
-- **Weather Sharing**: Share current weather conditions with friends via any sharing app
-- **Offline Mode**: Cached weather data available when offline
-- **Weather Alerts**: Periodic background notifications for severe weather conditions
+- **Real-time Weather Data:** Fetches current weather conditions, hourly forecasts, and 7-day forecasts using the Open-Meteo API
+- **Location Search:** Search and save multiple cities worldwide
+- **Saved Locations:** Manage favorite locations with the ability to set a default location
+- **Location Search:** Intelligent search with autocomplete suggestions showing live weather previews
+- **Offline Caching:** View previously searched locations even without internet connection
+- **Weather Sharing:** Share current weather conditions via any installed app
 
-### User Experience
-- **Biometric Authentication**: Secure app access with fingerprint/face recognition
-- **Multi-language Support**: Available in English, and Afrikaans
-- **Temperature Units**: Toggle between Celsius and Fahrenheit
-- **Modern UI**: Material Design 3 with gradient backgrounds and smooth animations
-- **Dark/Light Themes**: Respects system theme preferences
+### Security & Authentication
+- **Firebase Authentication:** Email/password and Google Sign-In support
+- **Biometric Authentication:** Fingerprint/face unlock for secure app access
+- **Session Management:** Automatic session locking when app goes to background
 
-### Technical Features
-- **Firebase Authentication**: Email/password and Google Sign-In support
-- **Local Database**: Room database for offline caching and saved locations
-- **Background Workers**: WorkManager for periodic weather alerts
-- **Session Management**: Biometric lock when app goes to background
+### Personalization
+- **Multi-language Support:** English, Zulu (isiZulu), and Afrikaans
+- **Temperature Units:** Switch between Celsius and Fahrenheit
+- **Weather Alerts:** Periodic notifications for severe weather conditions
+
+### User Interface
+- **Material Design 3:** Modern, clean interface with smooth animations
+- **Edge-to-Edge Display:** Immersive full-screen experience
+- **Background Blur Effects:** Visual depth on Android 12+ devices
+- **Responsive Navigation:** Drawer menu with intuitive navigation
+- **Weather Icons:** Custom icons for different weather conditions
 
 ---
 
-## 🎯 How It Works
+## 🛠️ Technical Stack
 
-### Authentication Flow
-1. **Landing Screen**: First-time users see a landing page with "Get Started" button
-2. **Sign In/Sign Up**: Users can create an account or sign in with:
-   - Email and password
-   - Google account
-3. **Biometric Prompt**: After successful authentication, users set up biometric lock for future sessions
+### Architecture & Patterns
+- **MVVM Architecture:** Separation of concerns with ViewModels
+- **Repository Pattern:** Clean data layer abstraction
+- **Coroutines & Flow:** Asynchronous programming with reactive data streams
+
+### Android Components
+- **Jetpack Libraries:**
+  - Room Database (offline caching)
+  - DataStore (preferences)
+  - WorkManager (background tasks)
+  - Biometric API (authentication)
+  - Lifecycle & ViewModel
+  
+### Networking & Data
+- **Retrofit:** REST API communication
+- **Gson:** JSON serialization/deserialization
+- **OkHttp:** HTTP client with logging interceptor
+- **Open-Meteo API:** Free weather data (no API key required)
+
+### Firebase Integration
+- **Firebase Authentication:** User authentication
+- **Google Sign-In:** OAuth integration
+- **Cloud Services:** Backend authentication management
+
+### Other Technologies
+- **Timber:** Logging framework
+- **Material Components:** UI components
+- **Kotlin DSL:** Gradle build configuration
+
+---
+
+## 📋 Requirements
+
+### Minimum Requirements
+- **Android Version:** 7.0 (Nougat, API 24) or higher
+- **Storage:** ~15-20 MB
+- **Internet Connection:** Required for weather data (cached data available offline)
+- **Permissions:**
+  - `INTERNET` - Fetch weather data
+  - `ACCESS_NETWORK_STATE` - Check connectivity
+  - `ACCESS_FINE_LOCATION` - Current location weather (optional)
+  - `USE_BIOMETRIC` - Biometric authentication (optional)
+  - `POST_NOTIFICATIONS` - Weather alerts (Android 13+, optional)
+
+### Recommended
+- **Android Version:** 12+ for best visual effects (blur, edge-to-edge)
+- **Biometric Hardware:** Fingerprint sensor or face unlock
+- **Google Play Services:** For Google Sign-In feature
+
+---
+
+## 🚀 Installation
+
+### Option 1: Download APK (Recommended for Grading)
+
+1. **Download the signed APK:**
+   - Go to [GitHub Releases](https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe/releases)
+   - Download `weather-app-v1.0.0.apk`
+
+2. **Enable Unknown Sources:**
+   - **Android 8.0+:** Settings → Apps → Special access → Install unknown apps → Select your browser → Allow
+   - **Android 7.x:** Settings → Security → Unknown sources → Enable
+
+3. **Install:**
+   - Open the downloaded APK file
+   - Tap "Install"
+   - Wait for installation to complete
+   - Tap "Open" to launch
+
+### Option 2: Build from Source
+
+```bash
+# Clone the repository
+git clone https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe.git
+cd PROG7314-FinalPoe
+
+# Open in Android Studio
+# Build → Select Build Variant → release
+# Build → Build Bundle(s) / APK(s) → Build APK(s)
+
+# APK location: app/build/outputs/apk/release/app-release.apk
+```
+
+---
+
+## 🎯 Usage Guide
+
+### First Launch
+
+1. **Create Account:**
+   - Choose "Sign Up" on the landing page
+   - Enter email and password (min 6 characters)
+   - Or use "Sign in with Google"
+
+2. **Biometric Setup (Optional):**
+   - If your device supports biometrics, you'll be prompted to enable it
+   - This adds an extra layer of security
+
+3. **Search for Weather:**
+   - Tap the search icon (🔍) in the top bar
+   - Type a city name
+   - Select from autocomplete suggestions
+   - View current weather and forecasts
+
+### Key Features
+
+#### 📍 Managing Locations
+
+**Save a Location:**
+1. Search for a city
+2. Once weather loads, tap "Save Location" button
+3. Location is added to your saved list
+
+**View Saved Locations:**
+1. Open drawer menu (☰)
+2. Select "Saved Locations"
+3. Tap a location to set it as default
+4. Swipe left/right to delete a location
+
+**Default Location:**
+- Set a default location to load automatically on app start
+- Default location is marked with a star (⭐)
+
+#### ⚙️ Settings
+
+**Change Temperature Units:**
+- Settings → Toggle "Use Celsius"
+- Switches between °C and °F
+
+**Change Language:**
+- Settings → Preferred Language
+- Choose: English, isiZulu, or Afrikaans
+- App restarts to apply changes
+
+#### 🔔 Weather Alerts
+
+**Enable Notifications (Android 13+):**
+- Grant "Post Notifications" permission when prompted
+- Alerts run every 15 minutes for your default location
+- Notifies about:
+  - Thunderstorms
+  - Heavy rain
+  - High winds (≥50 km/h)
+
+#### 📤 Share Weather
+
+1. Search for any location
+2. Tap share icon (📤) in top bar
+3. Choose app to share via (WhatsApp, Email, etc.)
+4. Weather summary is formatted and ready to send
+
+---
+
+## 🏗️ Project Structure
+
+```
+app/
+├── src/
+│   ├── main/
+│   │   ├── java/com/st10140587/prog7314_poe/
+│   │   │   ├── auth/                    # Biometric authentication
+│   │   │   │   └── BiometricGate.kt
+│   │   │   ├── data/                    # Data layer
+│   │   │   │   ├── local/              # Room database
+│   │   │   │   │   ├── AppDb.kt
+│   │   │   │   │   ├── LocalCache.kt
+│   │   │   │   │   ├── LocationDao.kt
+│   │   │   │   │   ├── LocationEntity.kt
+│   │   │   │   │   ├── ForecastDao.kt
+│   │   │   │   │   ├── ForecastEntity.kt
+│   │   │   │   │   └── Converters.kt
+│   │   │   │   ├── model/              # Data models
+│   │   │   │   │   └── WeatherDtos.kt
+│   │   │   │   ├── network/            # API services
+│   │   │   │   │   ├── RetrofitInstance.kt
+│   │   │   │   │   └── WeatherApiService.kt
+│   │   │   │   └── WeatherRepository.kt
+│   │   │   ├── notify/                  # Notifications
+│   │   │   │   ├── NotificationHelper.kt
+│   │   │   │   └── WeatherAlertWorker.kt
+│   │   │   ├── ui/                      # UI components
+│   │   │   │   ├── DailyAdapter.kt
+│   │   │   │   ├── HourAdapter.kt
+│   │   │   │   └── WeatherIcons.kt
+│   │   │   ├── App.kt                   # Application class
+│   │   │   ├── LandingActivity.kt       # Entry point
+│   │   │   ├── SignInActivity.kt        # Authentication
+│   │   │   ├── SignUpActivity.kt        # Registration
+│   │   │   ├── MainActivity.kt          # Main weather screen
+│   │   │   ├── LocationsActivity.kt     # Saved locations
+│   │   │   ├── SettingsActivity.kt      # App settings
+│   │   │   ├── SettingsStore.kt         # Preferences
+│   │   │   ├── LocaleUtils.kt           # Language management
+│   │   │   ├── SessionLock.kt           # Session management
+│   │   │   └── WeatherUtils.kt          # Utilities
+│   │   ├── res/                         # Resources
+│   │   │   ├── layout/                  # XML layouts
+│   │   │   ├── drawable/                # Icons & images
+│   │   │   ├── values/                  # Strings, colors
+│   │   │   ├── values-zu/               # Zulu translations
+│   │   │   └── values-af/               # Afrikaans translations
+│   │   └── AndroidManifest.xml
+│   └── test/
+│       └── java/.../WeatherAppTests.kt  # Unit tests
+├── build.gradle.kts                     # App-level build config
+└── google-services.json                 # Firebase config
+```
+
+---
+
+## 🧪 Testing
+
+### Unit Tests
+
+The project includes comprehensive unit tests covering core functionality:
+
+**Run tests locally:**
+```bash
+./gradlew test
+```
+
+**Run tests in Android Studio:**
+- Right-click on `WeatherAppTests.kt`
+- Select "Run 'WeatherAppTests'"
+
+**Test Coverage:**
+- ✅ Temperature conversion (Celsius ↔ Fahrenheit)
+- ✅ Weather description mapping
+- ✅ API response parsing
+- ✅ Location entity creation
+- ✅ Forecast caching logic
+- ✅ Search query validation
+- ✅ Session lock behavior
+- ✅ Settings persistence
+- ✅ Date formatting
+- ✅ Wind speed calculations
+
+**Automated Testing (GitHub Actions):**
+- Tests run automatically on every push to `main`, `master`, or `develop`
+- View results: [Actions Tab](https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe/actions)
+
+### Manual Testing Checklist
+
+**Authentication:**
+- [ ] Sign up with email
+- [ ] Sign in with email
+- [ ] Google Sign-In
+- [ ] Biometric authentication
+- [ ] Session lock on background
+
+**Weather Features:**
+- [ ] Search for city
+- [ ] View current weather
+- [ ] View hourly forecast (Yesterday/Today/Tomorrow)
+- [ ] View 7-day forecast
+- [ ] Save location
+- [ ] View saved locations
+- [ ] Set default location
+- [ ] Delete location
+- [ ] Offline cache access
+
+**Settings:**
+- [ ] Toggle temperature units
+- [ ] Change language
+- [ ] Sign out
+
+**Notifications:**
+- [ ] Receive weather alerts
+
+---
+
+## 🔒 Security & Privacy
+
+### Data Collection
+- **Location Data:** Only collected with user permission, used solely for weather data
+- **Search History:** Stored locally on device, not transmitted
+- **User Authentication:** Managed by Firebase, email/password encrypted
+
+### Data Storage
+- **Local Storage:** All data stored on device using Room Database
+- **No Third-Party Analytics:** No tracking or analytics services
+- **Firebase Authentication:** Secure, industry-standard authentication
+
+### Permissions
+- **Optional Permissions:** Location and Biometric are optional
+- **Minimal Data:** Only essential data collected
+- **User Control:** Clear app data anytime via Settings
+
+---
+
+## 📖 API Documentation
+
+### Open-Meteo API
+
+**Base URLs:**
+- Weather: `https://api.open-meteo.com/`
+- Geocoding: `https://geocoding-api.open-meteo.com/`
+
+**Key Endpoints:**
+
+```kotlin
+// Search for locations
+GET /v1/search?name={query}&count=10
+
+// Get weather forecast
+GET /v1/forecast?latitude={lat}&longitude={lon}
+  &current_weather=true
+  &hourly=temperature_2m,weathercode
+  &daily=temperature_2m_max,temperature_2m_min,precipitation_sum
+  &past_days=1
+  &forecast_days=7
+```
+
+**No API Key Required!** Open-Meteo is free and doesn't require registration.
+
+**Documentation:** https://open-meteo.com/en/docs
+
+---
+
+## 🐛 Known Issues & Limitations
+
+### Current Limitations
+1. **Weather Alerts:** Only check default location (not all saved locations)
+2. **Forecast Days:** Limited to 7 days by API
+3. **Location Search:** Requires exact city names (no fuzzy matching)
+4. **Offline Mode:** Can only view previously cached locations
+
+### Potential Issues
+1. **Google Sign-In:** Requires Google Play Services (not available on all devices)
+2. **Biometrics:** May not work on devices without proper hardware
+3. **Notifications:** User must grant permission on Android 13+
+4. **Background Blur:** Only available on Android 12+ (gracefully degrades)
+
+---
+
+## 🔄 Version History
+
+### Version 1.0.0 (Current)
+**Release Date:** November 18, 2025
+
+**Features:**
+- Initial release
+- Real-time weather data from Open-Meteo
+- Location search and management
+- Saved locations with default setting
+- Firebase authentication (Email & Google)
+- Biometric authentication
+- Multi-language support (EN, ZU, AF)
+- Offline caching
+- Weather alerts
+- Share functionality
+- Unit tests with CI/CD
+
+---
+
+## 🚧 Future Enhancements
+
+### Planned Features
+- [ ] Widget support for home screen
+- [ ] Weather maps and radar
+- [ ] Extended forecast (14 days)
+- [ ] Historical weather data
+- [ ] Weather comparison between cities
+- [ ] More granular alert customization
+- [ ] Dark mode toggle
+- [ ] Weather-based wallpapers
+- [ ] Integration with calendar for weather planning
+
+### Technical Improvements
+- [ ] Jetpack Compose UI migration
+- [ ] Pagination for saved locations
+- [ ] Background sync for all saved locations
+- [ ] More comprehensive unit tests
+- [ ] UI/Instrumentation tests
+- [ ] Performance monitoring
+- [ ] Crash reporting
+
+---
+
+## 👨‍💻 Development
+
+### Building the Project
+
+**Prerequisites:**
+- Android Studio Hedgehog (2023.1.1) or later
+- JDK 17
+- Android SDK API 35
+- Gradle 8.11.1
+
+**Setup:**
+```bash
+# Clone repository
+git clone https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe.git
+
+# Open in Android Studio
+# Sync Gradle files
+# Run on emulator or device
+```
+
+**Debug Build:**
+```bash
+./gradlew assembleDebug
+./gradlew installDebug
+```
+
+**Release Build:**
+```bash
+# Requires keystore configuration
+./gradlew assembleRelease
+```
+
+### Code Style
+- **Kotlin:** Official Kotlin code style
+- **Formatting:** Android Studio default formatter
+- **Naming:** Descriptive, camelCase for variables, PascalCase for classes
+
+### Contributing
+This is an academic project for coursework submission. Contributions are not being accepted at this time.
+
+---
+
+## 📄 License & Credits
+
+### Project License
+This project is submitted as academic coursework for PROG7312 at The Independent Institute of Education (IIE). All rights reserved by the student.
+
+### Third-Party Libraries
+
+**Android Jetpack**
+- Copyright © Google LLC
+- Apache License 2.0
+- https://developer.android.com/jetpack
+
+**Retrofit**
+- Copyright © 2013 Square, Inc.
+- Apache License 2.0
+- https://square.github.io/retrofit/
+
+**OkHttp**
+- Copyright © 2019 Square, Inc.
+- Apache License 2.0
+- https://square.github.io/okhttp/
+
+**Gson**
+- Copyright © 2008 Google Inc.
+- Apache License 2.0
+- https://github.com/google/gson
+
+**Timber**
+- Copyright © 2013 Jake Wharton
+- Apache License 2.0
+- https://github.com/JakeWharton/timber
+
+**Firebase**
+- Copyright © Google LLC
+- Apache License 2.0
+- https://firebase.google.com/
+
+**Material Components**
+- Copyright © Google LLC
+- Apache License 2.0
+- https://material.io/develop/android
+
+### Data Sources
+
+**Open-Meteo API**
+- Free weather API (no API key required)
+- Data licensed under CC BY 4.0
+- https://open-meteo.com/
+
+### Assets & Icons
+- Weather icons: Custom designed for this project
+- App icon: Custom designed for this project
+
+---
+
+## 📞 Support & Contact
+
+### For Grading/Academic Inquiries
+**Student:** Shaquille Sookanlall  
+**Student Number:** ST10140587  
+**Email:** st10140587@vcconnect.edu.za  
+**Institution:** The Independent Institute of Education (IIE)
+
+### Technical Issues
+For bugs or technical issues with the app:
+1. Check [Known Issues](#-known-issues--limitations) section
+2. Review [Installation](#-installation) instructions
+3. Contact via email above
+
+### Project Repository
+**GitHub:** https://github.com/ShaquilleSookanlall/PROG7314-FinalPoe
+
+---
+
+## 🎓 Academic Declaration
+
+This project was completed as part of the PROG7312 - Programming 3B module at The Independent Institute of Education (IIE) for the academic year 2025.
+
+### AI Usage Declaration
+AI tools (GitHub Copilot, Claude AI) were consulted during development for:
+- Code completion suggestions
+- Debugging assistance
+- Documentation formatting
+- Explaining complex Android APIs
+
+All core application logic, architecture decisions, and implementation were done independently by the student with full understanding of the codebase.
+
+### References
+
+1. Android Developers. (2025). *App Architecture Guide*. https://developer.android.com/topic/architecture
+2. Android Developers. (2025). *WorkManager Documentation*. https://developer.android.com/topic/libraries/architecture/workmanager
+3. Cormen, T. H., Leiserson, C. E., Rivest, R. L., & Stein, C. (2009). *Introduction to Algorithms* (3rd ed.). MIT Press.
+4. Firebase. (2025). *Firebase Authentication Documentation*. https://firebase.google.com/docs/auth
+5. Google. (2025). *Material Design 3*. https://m3.material.io/
+6. Open-Meteo. (2025). *Weather API Documentation*. https://open-meteo.com/en/docs
+7. Square. (2025). *Retrofit Documentation*. https://square.github.io/retrofit/
+
+---
+
+## 📸 Screenshots
 
 ### Main Weather Screen
-- **Header Section**: Displays current temperature, weather condition, and wind speed for the default location
-- **Search**: Tap the search icon (top-right) to search for cities
-  - Live autocomplete with weather preview
-  - Tap any suggestion to view full forecast
-- **Hourly Forecast**: Swipe horizontally through hourly temperatures
-  - Toggle between Yesterday, Today, and Tomorrow using chips
-- **Weekly Forecast**: Scroll vertically through 5-day forecast with high/low temperatures
-- **Share Button**: Top-right menu to share current weather
+- Current temperature and conditions
+- Hourly forecast chips (Yesterday/Today/Tomorrow)
+- 7-day forecast list
+- Search and save functionality
 
-### Navigation Drawer (Hamburger Menu)
-Access via the hamburger icon (top-left):
-- **🏠 Home**: Return to main weather screen
-- **📍 Saved Locations**: View and manage saved cities
-- **⚙️ Settings**: Configure app preferences
-- **🔓 Sign Out**: Log out of the app
-
-### Saved Locations Screen
-- **View All Locations**: See all saved cities with current weather
-- **Set Default**: Tap any location to set it as default (loads on app start)
-- **Delete Locations**: 
-  - Long-press any location to delete
-  - Or swipe left/right to delete
-- **Live Weather Data**: Each saved location shows current temperature and conditions
+### Saved Locations
+- List of saved cities with coordinates
+- Default location marked with star
+- Swipe to delete
+- Tap to set as default
 
 ### Settings
-- **Temperature Units**: Switch between Celsius (°C) and Fahrenheit (°F)
-- **Language**: Choose from:
-  - English
-  - French (Français)
-  - Afrikaans
-  - *Note: Changing language restarts the app*
+- Temperature unit toggle
+- Language selection
+- Sign out option
 
+### Authentication
+- Email/password sign-in
+- Google Sign-In option
+- Biometric prompt
+- 
 ---
 
-## 🚀 How to Use
-
-### Getting Started
-1. **Install the app** on your Android device
-2. **Launch the app** - you'll see the landing screen
-3. **Tap "Get Started"** to create an account or sign in
-4. **Set up biometric authentication** (fingerprint/face) when prompted
-
-### Searching for Weather
-1. **Tap the search icon** (magnifying glass) in the top-right corner
-2. **Type a city name** - suggestions appear as you type with live weather previews
-3. **Select a city** from suggestions
-4. **View the forecast** - hourly and weekly data loads automatically
-5. **Save the location** *(optional)*:
-   - The location is automatically saved when you search for it
-   - Access saved locations from the hamburger menu → Saved Locations
-
-### Managing Locations
-1. **Open hamburger menu** (☰) → Select "Saved locations"
-2. **View all saved cities** with current weather
-3. **Set default location**: Tap any city to set it as default
-4. **Delete locations**:
-   - **Long-press** any location, or
-   - **Swipe left/right** on a location
-
-### Viewing Hourly Forecast
-1. Below the main weather display, find the **chip selector**:
-   - Yesterday | Today | Tomorrow
-2. **Tap any chip** to view hourly temperatures for that day
-3. **Scroll horizontally** through the hourly forecast
-
-### Sharing Weather
-1. **Tap the share icon** (↗️) in the top-right corner
-2. **Choose your sharing app** (WhatsApp, Email, SMS, etc.)
-3. Weather summary is automatically formatted for sharing
-
-### Changing Settings
-1. **Open hamburger menu** (☰) → Select "Settings"
-2. **Toggle temperature units** with the Celsius/Fahrenheit switch
-3. **Change language**:
-   - Tap "Preferred Language"
-   - Select your language
-   - App will restart with the new language
-
----
-
-## 🔔 Weather Alerts
-
-The app monitors your default location and sends notifications for:
-- ⛈️ Thunderstorms
-- 🌧️ Rain showers
-- 🌫️ Drizzle
-- 💨 High winds (≥50 km/h)
-
-**Note**: Alerts check every 15 minutes when connected to the internet.
-
----
-
-## 🛠️ Developer Setup
-
-### Prerequisites
-- **Android Studio**: Arctic Fox (2020.3.1) or newer
-- **JDK**: 11 or higher
-- **Minimum SDK**: 24 (Android 7.0)
-- **Target SDK**: 34 (Android 14)
-- **Kotlin**: 1.9.0 or higher
-
-### Required API Keys & Services
-
-#### 1. Firebase Setup
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project (or use existing)
-3. Add an Android app:
-   - Package name: `com.st10140587.prog7314_poe`
-   - Download `google-services.json`
-   - Place it in `app/` directory
-4. Enable Authentication:
-   - Go to **Authentication** → **Sign-in method**
-   - Enable **Email/Password**
-   - Enable **Google** sign-in
-5. For Google Sign-In:
-   - Get your app's SHA-1 fingerprint:
-     ```bash
-     keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
-     ```
-   - Add SHA-1 to Firebase project settings → Android app
-
-#### 2. Open-Meteo API
-- **No API key required!** ✅
-- The app uses [Open-Meteo](https://open-meteo.com/) which is free and open-source
-- Endpoints:
-  - Weather: `https://api.open-meteo.com/`
-  - Geocoding: `https://geocoding-api.open-meteo.com/`
-
-### Installation Steps
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/weather-app.git
-   cd weather-app
-   ```
-
-2. **Open in Android Studio**
-   - Launch Android Studio
-   - File → Open → Select the project directory
-   - Wait for Gradle sync to complete
-
-3. **Add `google-services.json`**
-   - Place your Firebase `google-services.json` file in the `app/` directory
-   - If missing, you'll see build errors
-
-4. **Sync Project**
-   - File → Sync Project with Gradle Files
-   - Resolve any dependency issues
-
-5. **Run the App**
-   - Connect an Android device (API 24+) or start an emulator
-   - Click the Run button (▶️) or press `Shift + F10`
-   - Select your device and click OK
-
-### Project Structure
-
-```
-app/src/main/java/com/st10140587/prog7314_poe/
-├── auth/
-│   └── BiometricGate.kt              # Biometric authentication handler
-├── data/
-│   ├── local/
-│   │   ├── AppDb.kt                  # Room database
-│   │   ├── LocalCache.kt             # Cache management
-│   │   ├── LocationDao.kt            # Location data access
-│   │   ├── LocationEntity.kt         # Location model
-│   │   ├── ForecastDao.kt            # Forecast data access
-│   │   └── ForecastEntity.kt         # Forecast model
-│   ├── model/
-│   │   └── WeatherDtos.kt            # API response models
-│   ├── network/
-│   │   ├── RetrofitInstance.kt       # Retrofit configuration
-│   │   └── WeatherApiService.kt      # API endpoints
-│   └── WeatherRepository.kt          # Data repository
-├── notify/
-│   ├── NotificationHelper.kt         # Notification utilities
-│   └── WeatherAlertWorker.kt         # Background worker
-├── ui/
-│   ├── DailyAdapter.kt               # Weekly forecast adapter
-│   ├── HourAdapter.kt                # Hourly forecast adapter
-│   └── WeatherIcons.kt               # Weather icon mapping
-├── App.kt                            # Application class
-├── LandingActivity.kt                # Landing screen
-├── MainActivity.kt                   # Main weather screen
-├── LocationsActivity.kt              # Saved locations screen
-├── SettingsActivity.kt               # Settings screen
-├── SignInActivity.kt                 # Sign in screen
-├── SignUpActivity.kt                 # Sign up screen
-├── LocaleUtils.kt                    # Language utilities
-├── SessionLock.kt                    # Session management
-└── SettingsStore.kt                  # User preferences
-```
-
-### Key Dependencies
-
-```gradle
-// Firebase
-implementation 'com.google.firebase:firebase-auth-ktx:22.1.1'
-implementation 'com.google.android.gms:play-services-auth:20.7.0'
-
-// Networking
-implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
-
-// Room Database
-implementation 'androidx.room:room-runtime:2.5.2'
-implementation 'androidx.room:room-ktx:2.5.2'
-kapt 'androidx.room:room-compiler:2.5.2'
-
-// WorkManager
-implementation 'androidx.work:work-runtime-ktx:2.8.1'
-
-// Biometric
-implementation 'androidx.biometric:biometric:1.1.0'
-
-// Coroutines
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-
-// DataStore
-implementation 'androidx.datastore:datastore-preferences:1.0.0'
-
-// Material Design
-implementation 'com.google.android.material:material:1.9.0'
-```
-
-### Build Configuration
-
-**File: `app/build.gradle`**
-
-```gradle
-android {
-    compileSdk 34
-    
-    defaultConfig {
-        applicationId "com.st10140587.prog7314_poe"
-        minSdk 24
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
-    }
-    
-    buildFeatures {
-        viewBinding true
-        dataBinding true
-    }
-    
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
-```
-
-### Testing the App
-
-#### Testing Authentication
-1. **Email Sign-Up**: Create account with test email
-2. **Google Sign-In**: Use your Google account
-3. **Biometric**: Device must have fingerprint/face enrolled
-
-#### Testing Weather Features
-1. **Search**: Try "Durban", "London", "New York"
-2. **Save Locations**: Save multiple cities
-3. **Set Default**: Tap a saved location to set as default
-4. **Offline Mode**: Enable airplane mode and relaunch app
-
-#### Testing Notifications
-Enable debug mode in `WeatherAlertWorker.kt`:
-```kotlin
-WeatherAlertWorker.DEBUG_ALWAYS_ALERT = true
-```
-This sends a notification every 15 minutes for testing.
-
----
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-**Issue**: Google Sign-In fails with `DEVELOPER_ERROR`
-- **Solution**: Verify SHA-1 fingerprint is added to Firebase console
-- Check package name matches in Firebase and `build.gradle`
-
-**Issue**: App crashes on startup
-- **Solution**: Ensure `google-services.json` is in the `app/` directory
-- Check Firebase configuration is correct
-
-**Issue**: No weather data loads
-- **Solution**: Check internet connection
-- Verify device date/time is correct
-- Check Logcat for API errors
-
-**Issue**: Biometric prompt doesn't appear
-- **Solution**: Ensure device has biometric authentication enabled
-- Check device settings → Security → Fingerprint/Face unlock
-
-**Issue**: Language doesn't change
-- **Solution**: Restart the app completely (force stop and relaunch)
-- Clear app data if issue persists
-
-**Issue**: Notifications not received
-- **Solution**: 
-  - Android 13+: Grant POST_NOTIFICATIONS permission
-  - Check notification settings for the app
-  - Ensure background data is enabled
-
----
-
-## 📋 Features Checklist
-
-- ✅ User Authentication (Firebase)
-- ✅ Biometric Security
-- ✅ Weather Forecasting (Current, Hourly, Weekly)
-- ✅ Location Search & Management
-- ✅ Offline Caching
-- ✅ Weather Sharing
-- ✅ Background Notifications
-- ✅ Multi-language Support (EN, FR, AF)
-- ✅ Temperature Unit Conversion (°C/°F)
-- ✅ Material Design 3 UI
-- ✅ Session Management
-- ✅ Swipe-to-Delete Gestures
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 👨‍💻 Developer
-
-**Student Number**: ST10140587  
-**Project**: PROG7314 POE - Weather Application
-
----
-
-## 🙏 Acknowledgments
-
-- [Open-Meteo](https://open-meteo.com/) - Free weather API
-- [Firebase](https://firebase.google.com/) - Authentication services
-- [Material Design](https://material.io/) - UI design guidelines
-- [Timber](https://github.com/JakeWharton/timber) - Logging library
-
----
-
-## 📞 Support
-
-For issues, questions, or contributions:
-1. Open an issue in the GitHub repository
-2. Provide detailed steps to reproduce any bugs
-3. Include device information and Android version
-
----
-
-## 🔮 Future Enhancements
-
-- [ ] Weather maps integration
-- [ ] Radar imagery
-- [ ] Extended 14-day forecasts
-- [ ] Weather widgets
-- [ ] Weather history graphs
-- [ ] UV index and air quality data
-- [ ] Custom notification preferences
-- [ ] Location-based auto-detection
-
----
-
-**Made with ❤️ and ☕ by a weather enthusiast**
+*Last Updated: November 18, 2025*  
+*Version: 1.0.0*  
+*Build: Release*

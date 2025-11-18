@@ -24,6 +24,52 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
+    - name: Generate debug keystore for CI
+      run: |
+        keytool -genkey -v -keystore shared-debug.keystore \
+          -storepass android -alias androiddebugkey -keypass android \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -dname "CN=Android Debug,O=Android,C=US"
+    
+    - name: Create dummy google-services.json for CI
+      run: |
+        cat > app/google-services.json << 'EOF'
+        {
+          "project_info": {
+            "project_number": "000000000000",
+            "project_id": "dummy-project",
+            "storage_bucket": "dummy-project.appspot.com"
+          },
+          "client": [
+            {
+              "client_info": {
+                "mobilesdk_app_id": "1:000000000000:android:0000000000000000",
+                "android_client_info": {
+                  "package_name": "com.st10140587.prog7314_poe"
+                }
+              },
+              "oauth_client": [
+                {
+                  "client_id": "000000000000-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com",
+                  "client_type": 3
+                }
+              ],
+              "api_key": [
+                {
+                  "current_key": "AIzaSyDummyKeyForCITesting00000000000000"
+                }
+              ],
+              "services": {
+                "appinvite_service": {
+                  "other_platform_oauth_client": []
+                }
+              }
+            }
+          ],
+          "configuration_version": "1"
+        }
+        EOF
+    
     - name: Cache Gradle packages
       uses: actions/cache@v3
       with:
@@ -41,24 +87,8 @@ jobs:
         echo "App module structure:"
         ls -la app/src/ || echo "No app/src directory"
         
-    # --- THIS IS THE CORRECTED STEP ---
-    # Creates the google-services.json file from the GitHub Secret
-    - name: Create google-services.json
-      env:
-        GOOGLE_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-      run: echo "$GOOGLE_JSON" > app/google-services.json
-      
-    - name: Build project
-      run: ./gradlew build -x test --stacktrace
-      
-    - name: Run unit tests (trying testDebugUnitTest)
+    - name: Run unit tests
       run: ./gradlew :app:testDebugUnitTest --stacktrace
-      continue-on-error: true
-      id: test_debug
-      
-    - name: Run unit tests (trying test as fallback)
-      if: steps.test_debug.outcome == 'failure'
-      run: ./gradlew :app:test --stacktrace
       
     - name: Display test results location
       if: always()
