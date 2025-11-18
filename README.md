@@ -14,7 +14,7 @@ A modern Android weather application built with Kotlin that provides real-time w
 
 ### User Experience
 - **Biometric Authentication**: Secure app access with fingerprint/face recognition
-- **Multi-language Support**: Available in English, French, and Afrikaans
+- **Multi-language Support**: Available in English, and Afrikaans
 - **Temperature Units**: Toggle between Celsius and Fahrenheit
 - **Modern UI**: Material Design 3 with gradient backgrounds and smooth animations
 - **Dark/Light Themes**: Respects system theme preferences
